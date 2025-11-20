@@ -14,10 +14,10 @@ const UbicacionSchema = new Schema(
     },
     fecha_inicio: {
       type: Date
-    },
+    }, 
     fecha_fin: {
       type: Date
-    },
+    }, 
     coordenadas: {
       lat: { type: Number },
       lng: { type: Number }
