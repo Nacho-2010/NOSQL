@@ -11,7 +11,7 @@ const NinoSchema = new mongoose.Schema(
         fecha_nacimiento: {
             type: Date         
         },
-        sexo: {
+        genero: {
             type: String,
             enum: ['F', 'M', 'Otro'],
             default: null    
