@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <title>Reportes</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="#">PANI_DB</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+
+        <li class="nav-item">
+          <a class="nav-link" href="ninos.html">Niños</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="responsables.html">Responsables</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="ong.html">ONG</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="abrigo.html">Abrigo</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="familiares.html">Familiares</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="hermanos.html">Hermanos</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="salud.html">Salud</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="educacion.html">Educación</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="alertas.html">Alertas</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="visitas.html">Visitas</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="reportes.html">Reportes</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="adopciones.html">Adopciones / Egresos</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<body>
+    <div class="container mt-4">
+        <h1>Reportes de seguimiento</h1>
+
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalReporte">
+            Registrar reporte
+        </button>
+
+        <div class="modal fade" id="modalReporte" tabindex="-1" aria-labelledby="modalReporteLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalReporteLabel">Registrar reporte</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="reporteFormulario">
+                            <div class="mb-3">
+                                <label class="form-label">ID Niño</label>
+                                <input type="text" class="form-control" id="id_nino" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="fecha" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Autor (ID responsable)</label>
+                                <input type="text" class="form-control" id="autor" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion" rows="3" required></textarea>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button type="reset" class="btn btn-secondary">Limpiar</button>
+                            </div>
+                        </form>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-3">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID Niño</th>
+                        <th>Fecha</th>
+                        <th>Autor</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaDatos"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/reportes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
