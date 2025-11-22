@@ -1,53 +1,92 @@
 const APIURL_HERMANOS = "http://localhost:3000/api/hermanos/";
 
-// Cargar hermanos
-async function cargarDatosHermanos() {
-    try {
-        const res = await fetch(APIURL_HERMANOS);
-        const hermanos = await res.json();
 
-        const tbody = document.getElementById("tablaDatos");
-        tbody.innerHTML = "";
+function cargarDatosHermanos() {
+
+    $.get(APIURL_HERMANOS, function (hermanos) {
+
+        const tbody = $("#tablaDatos");
+        tbody.empty();
 
         hermanos.forEach(h => {
-            tbody.innerHTML += `
+            tbody.append(`
                 <tr>
                     <td>${h._id}</td>
                     <td>${h.id_nino || ""}</td>
                     <td>${h.id_hermano || ""}</td>
                     <td>${h.tipo || ""}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning btn-editar" data-id="${h._id}">
+                            Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger btn-eliminar" data-id="${h._id}">
+                            Eliminar
+                        </button>
+                    </td>
                 </tr>
-            `;
+            `);
         });
 
         console.log(hermanos);
-    } catch (error) {
-        console.log("Error al cargar hermanos: " + error);
-    }
+
+    }).fail(function (err) {
+        console.error("Error al cargar hermanos:", err);
+    });
 }
 
-// Guardar relación 
-document.getElementById("hermanoFormulario").addEventListener("submit", async e => {
+
+$("#hermanoFormulario").on("submit", function (e) {
     e.preventDefault();
 
-    try {
-        const datos = {
-            id_nino: document.getElementById("id_nino").value,
-            id_hermano: document.getElementById("id_hermano").value,
-            tipo: document.getElementById("tipo").value || ""
-        };
+    const datos = {
+        id_nino: $("#id_nino").val(),
+        id_hermano: $("#id_hermano").val(),
+        tipo: $("#tipo").val() || ""
+    };
 
-        await fetch(APIURL_HERMANOS, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos)
-        });
+    $.ajax({
+        url: APIURL_HERMANOS,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
 
-        e.target.reset();
-        cargarDatosHermanos();
-    } catch (error) {
-        console.log("Error al guardar hermano: " + error);
-    }
+        success: function () {
+            $("#hermanoFormulario")[0].reset();
+            cargarDatosHermanos();
+        },
+        error: function (err) {
+            console.error("Error al guardar hermano:", err);
+        }
+    });
 });
+
+
+$("#tablaDatos").on("click", ".btn-eliminar", function () {
+
+    const id = $(this).data("id");
+
+    if (!confirm("¿Desea eliminar esta relación de hermanos?")) return;
+
+    $.ajax({
+        url: APIURL_HERMANOS + id,
+        method: "DELETE",
+
+        success: function () {
+            cargarDatosHermanos();
+        },
+        error: function (err) {
+            console.error("Error al eliminar hermano:", err);
+        }
+    });
+});
+
+
+
+$("#tablaDatos").on("click", ".btn-editar", function () {
+    const id = $(this).data("id");
+    console.log("Editar hermano con id:", id);
+
+});
+
 
 cargarDatosHermanos();

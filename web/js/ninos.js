@@ -1,16 +1,15 @@
 const APIURL_NINOS = "http://localhost:3000/api/ninos/";
 
-// Cargar 
-async function cargarDatosNinos() {
-    try {
-        const res = await fetch(APIURL_NINOS);
-        const ninos = await res.json();
 
-        const tbody = document.getElementById("tablaDatos");
-        tbody.innerHTML = "";
+function cargarDatosNinos() {
+
+    $.get(APIURL_NINOS, function (ninos) {
+
+        const tbody = $("#tablaDatos");
+        tbody.empty();
 
         ninos.forEach(nino => {
-            tbody.innerHTML += `
+            tbody.append(`
                 <tr>
                     <td>${nino._id}</td>
                     <td>${nino.nombre || ""}</td>
@@ -18,42 +17,83 @@ async function cargarDatosNinos() {
                     <td>${nino.sexo || ""}</td>
                     <td>${nino.direccion_actual || ""}</td>
                     <td>${nino.estado || ""}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning btn-editar" data-id="${nino._id}">
+                            Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger btn-eliminar" data-id="${nino._id}">
+                            Eliminar
+                        </button>
+                    </td>
                 </tr>
-            `;
+            `);
         });
 
         console.log(ninos);
-    } catch (error) {
-        console.log("Error al cargar niños: " + error);
-    }
+
+    }).fail(function (err) {
+        console.error("Error al cargar niños:", err);
+    });
 }
 
-// Guardar niño
-document.getElementById("ninoFormulario").addEventListener("submit", async e => {
+
+
+$("#ninoFormulario").on("submit", function (e) {
     e.preventDefault();
 
-    try {
-        const datos = {
-            nombre: document.getElementById("nombre").value,
-            fecha_nacimiento: document.getElementById("fecha_nacimiento").value || null,
-            sexo: document.getElementById("sexo").value || null,
-            direccion_actual: document.getElementById("direccion_actual").value || "",
-            id_ong: document.getElementById("id_ong").value || null,
-            estado: document.getElementById("estado").value || "Activo",
-            responsable_actual: document.getElementById("responsable_actual").value || null
-        };
+    const datos = {
+        nombre: $("#nombre").val(),
+        fecha_nacimiento: $("#fecha_nacimiento").val() || null,
+        sexo: $("#sexo").val() || null,
+        direccion_actual: $("#direccion_actual").val() || "",
+        id_ong: $("#id_ong").val() || null,
+        estado: $("#estado").val() || "Activo",
+        responsable_actual: $("#responsable_actual").val() || null
+    };
 
-        await fetch(APIURL_NINOS, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos)
-        });
+    $.ajax({
+        url: APIURL_NINOS,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
 
-        e.target.reset();
-        cargarDatosNinos();
-    } catch (error) {
-        console.log("Error al guardar niño: " + error);
-    }
+        success: function () {
+            $("#ninoFormulario")[0].reset();
+            cargarDatosNinos();
+        },
+        error: function (err) {
+            console.error("Error al guardar niño:", err);
+        }
+    });
 });
+
+
+$("#tablaDatos").on("click", ".btn-eliminar", function () {
+
+    const id = $(this).data("id");
+
+    if (!confirm("¿Desea eliminar este niño del registro?")) return;
+
+    $.ajax({
+        url: APIURL_NINOS + id,
+        method: "DELETE",
+
+        success: function () {
+            cargarDatosNinos();
+        },
+        error: function (err) {
+            console.error("Error al eliminar niño:", err);
+        }
+    });
+});
+
+
+
+$("#tablaDatos").on("click", ".btn-editar", function () {
+    const id = $(this).data("id");
+    console.log("Editar niño con id:", id);
+
+});
+
 
 cargarDatosNinos();

@@ -1,56 +1,64 @@
 const APIURL_ABRIGO = "http://localhost:3000/api/abrigo/";
 
-// Cargar lista 
-async function cargarDatosAbrigo() {
-    try {
-        const res = await fetch(APIURL_ABRIGO);
-        const abrigos = await res.json();
+function cargarDatosAbrigo() {
 
-        const tbody = document.getElementById("tablaDatos");
-        tbody.innerHTML = '';
+    $.get(APIURL_ABRIGO, function (abrigos) {
 
-        abrigos.forEach(elementAbrigo => {
-            tbody.innerHTML += `
+        const tbody = $("#tablaDatos");
+        tbody.empty();
+
+        abrigos.forEach(abrigo => {
+            tbody.append(`
                 <tr>
-                    <td scope="row">${elementAbrigo._id}</td>
-                    <td>${elementAbrigo.nombre}</td>
-                    <td>${elementAbrigo.descripcion}</td>
-                    <td>${elementAbrigo.estado}</td>
-                    <td>${elementAbrigo.correo}</td>
+                    <td>${abrigo._id}</td>
+                    <td>${abrigo.nombre}</td>
+                    <td>${abrigo.descripcion}</td>
+                    <td>${abrigo.estado}</td>
+                    <td>${abrigo.correo}</td>
+                    <td>
+                      <button class="btn btn-sm btn-warning btn-editar" data-id="${abrigo._id}">
+                            Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger btn-eliminar" data-id="${abrigo._id}">
+                            Eliminar
+                        </button>
+                        </td>
                 </tr>
-            `;
+            `);
         });
 
         console.log(abrigos);
-    } catch (error) {
-        console.log("Error al cargar abrigos: " + error);
-    }
+
+    }).fail(function (err) {
+        console.error("Error al cargar abrigos:", err);
+    });
 }
 
-// Guardar 
-document.getElementById("abrigoFormulario").addEventListener('submit', async e => {
+$("#abrigoFormulario").on("submit", function (e) {
+
     e.preventDefault();
 
-    try {
-        const datos = {
-            nombre: document.getElementById("nombre").value,
-            descripcion: document.getElementById("descripcion").value,
-            estado: document.getElementById("estado").value,
-            correo: document.getElementById("correo").value,
-        };
+    const datos = {
+        nombre: $("#nombre").val(),
+        descripcion: $("#descripcion").val(),
+        estado: $("#estado").val(),
+        correo: $("#correo").val(),
+    };
 
-        await fetch(APIURL_ABRIGO, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datos)
-        });
+    $.ajax({
+        url: APIURL_ABRIGO,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
 
-        e.target.reset();
-        cargarDatosAbrigo();
-    } catch (error) {
-        console.log("Error al guardar abrigo: " + error);
-    }
+        success: function () {
+            $("#abrigoFormulario")[0].reset();
+            cargarDatosAbrigo();
+        },
+
+        error: function (err) {
+            console.error("Error al guardar abrigo:", err);
+        }
+    });
 });
-
-
 cargarDatosAbrigo();

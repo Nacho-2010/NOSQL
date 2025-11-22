@@ -1,55 +1,59 @@
 const APIURL_SALUD = "http://localhost:3000/api/salud/";
 
-// Cargar salud
-async function cargarDatosSalud() {
-    try {
-        const res = await fetch(APIURL_SALUD);
-        const registros = await res.json();
 
-        const tbody = document.getElementById("tablaDatos");
-        tbody.innerHTML = "";
+function cargarDatosSalud() {
+
+    $.get(APIURL_SALUD, function (registros) {
+
+        const $tbody = $("#tablaDatos");
+        $tbody.html(""); 
 
         registros.forEach(s => {
-            tbody.innerHTML += `
+            $tbody.append(`
                 <tr>
                     <td>${s._id}</td>
                     <td>${s.id_nino || ""}</td>
                     <td>${s.fecha ? new Date(s.fecha).toLocaleDateString() : ""}</td>
                     <td>${s.descripcion || ""}</td>
                     <td>${s.observaciones || ""}</td>
+                                   <td>
+                        <button class="btn btn-sm btn-warning btn-editar" data-id="${s._id}">Editar</button>
+                        <button class="btn btn-sm btn-danger btn-eliminar" data-id="${s._id}">Eliminar</button>
+                    </td>
+
                 </tr>
-            `;
+            `);
         });
 
         console.log(registros);
-    } catch (error) {
-        console.log("Error al cargar salud: " + error);
-    }
+    })
+    .fail(err => {
+        console.log("Error al cargar salud: ", err);
+    });
 }
 
-// Guardar 
-document.getElementById("saludFormulario").addEventListener("submit", async e => {
+$("#saludFormulario").on("submit", function (e) {
     e.preventDefault();
 
-    try {
-        const datos = {
-            id_nino: document.getElementById("id_nino").value,
-            fecha: document.getElementById("fecha").value,
-            descripcion: document.getElementById("descripcion").value,
-            observaciones: document.getElementById("observaciones").value || ""
-        };
+    const datos = {
+        id_nino: $("#id_nino").val(),
+        fecha: $("#fecha").val(),
+        descripcion: $("#descripcion").val(),
+        observaciones: $("#observaciones").val() || ""
+    };
 
-        await fetch(APIURL_SALUD, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos)
-        });
-
-        e.target.reset();
-        cargarDatosSalud();
-    } catch (error) {
-        console.log("Error al guardar salud: " + error);
-    }
+    $.ajax({
+        url: APIURL_SALUD,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: function () {
+            $("#saludFormulario")[0].reset();
+            cargarDatosSalud();
+        },
+        error: function (err) {
+            console.log("Error al guardar salud: ", err);
+        }
+    });
 });
-
 cargarDatosSalud();

@@ -1,55 +1,61 @@
 const APIURL_EDUCACION = "http://localhost:3000/api/educacion/";
+function cargarDatosEducacion() {
 
-// Cargar educación
-async function cargarDatosEducacion() {
-    try {
-        const res = await fetch(APIURL_EDUCACION);
-        const registros = await res.json();
+    $.get(APIURL_EDUCACION, function (registros) {
 
-        const tbody = document.getElementById("tablaDatos");
-        tbody.innerHTML = "";
+        const tbody = $("#tablaDatos");
+        tbody.empty();
 
         registros.forEach(e => {
-            tbody.innerHTML += `
+            tbody.append(`
                 <tr>
                     <td>${e._id}</td>
                     <td>${e.id_nino || ""}</td>
                     <td>${e.centro_educativo || ""}</td>
                     <td>${e.nivel || ""}</td>
                     <td>${e.rendimiento || ""}</td>
+                    <td>
+                      <button class="btn btn-sm btn-warning btn-editar" data-id="${e._id}">
+                            Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger btn-eliminar" data-id="${e._id}">
+                            Eliminar
+                        </button>
+                        </td>
                 </tr>
-            `;
+            `);
         });
 
         console.log(registros);
-    } catch (error) {
-        console.log("Error al cargar educación: " + error);
-    }
+
+    }).fail(function (err) {
+        console.error("Error al cargar educación:", err);
+    });
 }
 
-// Guardar  educativo
-document.getElementById("educacionFormulario").addEventListener("submit", async e => {
+$("#educacionFormulario").on("submit", function (e) {
     e.preventDefault();
 
-    try {
-        const datos = {
-            id_nino: document.getElementById("id_nino").value,
-            centro_educativo: document.getElementById("centro_educativo").value,
-            nivel: document.getElementById("nivel").value || "",
-            rendimiento: document.getElementById("rendimiento").value || ""
-        };
+    const datos = {
+        id_nino: $("#id_nino").val(),
+        centro_educativo: $("#centro_educativo").val(),
+        nivel: $("#nivel").val() || "",
+        rendimiento: $("#rendimiento").val() || ""
+    };
 
-        await fetch(APIURL_EDUCACION, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos)
-        });
+    $.ajax({
+        url: APIURL_EDUCACION,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
 
-        e.target.reset();
-        cargarDatosEducacion();
-    } catch (error) {
-        console.log("Error al guardar educación: " + error);
-    }
+        success: function () {
+            $("#educacionFormulario")[0].reset();
+            cargarDatosEducacion();
+        },
+        error: function (err) {
+            console.error("Error al guardar educación:", err);
+        }
+    });
 });
-
 cargarDatosEducacion();

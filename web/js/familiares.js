@@ -1,17 +1,13 @@
 const APIURL_FAMILIARES = "http://localhost:3000/api/familiares/";
+function cargarDatosFamiliares() {
 
-// Cargar 
-async function cargarDatosFamiliares() {
-    try {
-      
-        const res = await fetch(APIURL_FAMILIARES);
-        const familiares = await res.json();
+    $.get(APIURL_FAMILIARES, function (familiares) {
 
-        const tbody = document.getElementById("tablaDatos");
-        tbody.innerHTML = "";
+        const tbody = $("#tablaDatos");
+        tbody.empty();
 
         familiares.forEach(fam => {
-            tbody.innerHTML += `
+            tbody.append(`
                 <tr>
                     <td>${fam._id}</td>
                     <td>${fam.nombre || ""}</td>
@@ -19,67 +15,67 @@ async function cargarDatosFamiliares() {
                     <td>${fam.telefono || ""}</td>
                     <td>${fam.estado_contacto || ""}</td>
                     <td>${fam.id_nino || ""}</td>
-                      <td>
-                <button class="btn btn-sm btn-warning btn-editar" data-id="${fam._id}">Editar</button>
-                <button class="btn btn-sm btn-danger btn-eliminar" data-id="${fam._id}">Eliminar</button>
-            </td>
+                    <td>
+                        <button class="btn btn-sm btn-warning btn-editar" data-id="${fam._id}">Editar</button>
+                        <button class="btn btn-sm btn-danger btn-eliminar" data-id="${fam._id}">Eliminar</button>
+                    </td>
                 </tr>
-            `;
+            `);
         });
 
         console.log(familiares);
-    } catch (error) {
-        console.log("Error al cargar familiares: " + error);
-    }
+
+    }).fail(function (err) {
+        console.error("Error al cargar familiares:", err);
+    });
 }
 
-// Guardar familiar
-document.getElementById("familiarFormulario").addEventListener("submit", async e => {
+
+$("#familiarFormulario").on("submit", function (e) {
     e.preventDefault();
 
-    try {
-        const datos = {
-            nombre: document.getElementById("nombre").value,
-            parentesco: document.getElementById("parentesco").value || "Desconocido",
-            telefono: document.getElementById("telefono").value || "",
-            estado_contacto: document.getElementById("estado_contacto").value || "Sin contacto",
-            id_nino: document.getElementById("id_nino").value // aquí debe ir el ObjectId del niño
-        };
+    const datos = {
+        nombre: $("#nombre").val(),
+        parentesco: $("#parentesco").val() || "Desconocido",
+        telefono: $("#telefono").val() || "",
+        estado_contacto: $("#estado_contacto").val() || "Sin contacto",
+        id_nino: $("#id_nino").val()
+    };
 
-        await fetch(APIURL_FAMILIARES, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos)
-        });
+    $.ajax({
+        url: APIURL_FAMILIARES,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
 
-        e.target.reset();
-        cargarDatosFamiliares();
-    } catch (error) {
-        console.log("Error al guardar familiar: " + error);
-    }
+        success: function () {
+            $("#familiarFormulario")[0].reset();
+            cargarDatosFamiliares();
+        },
+        error: function (err) {
+            console.error("Error al guardar familiar:", err);
+        }
+    });
 });
 
-const tbody = document.getElementById("tablaDatos");
 
-tbody.addEventListener("click", async (e) => {
-    const btn = e.target;
+$("#tablaDatos").on("click", ".btn-eliminar", function () {
 
-    
-    
-    if (btn.classList.contains("btn-eliminar")) {
-        const id = btn.dataset.id;
+    const id = $(this).data("id");
 
-        if (!confirm("¿Desea eliminar este familiar?")) return;
+    if (!confirm("¿Desea eliminar este familiar?")) return;
 
-        try {
-            await fetch(APIURL_FAMILIARES + id, {
-                method: "DELETE"
-            });
+    $.ajax({
+        url: APIURL_FAMILIARES + id,
+        method: "DELETE",
+
+        success: function () {
             cargarDatosFamiliares();
-        } catch (error) {
-            console.log("Error al eliminar familiar: " + error);
+        },
+        error: function (err) {
+            console.error("Error al eliminar familiar:", err);
         }
-    }
+    });
 });
 
 cargarDatosFamiliares();

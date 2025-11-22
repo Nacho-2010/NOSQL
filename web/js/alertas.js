@@ -1,16 +1,14 @@
 const APIURL_ALERTAS = "http://localhost:3000/api/alertas/";
 
-// Cargar 
-async function cargarDatosAlertas() {
-    try {
-        const res = await fetch(APIURL_ALERTAS);
-        const alertas = await res.json();
+function cargarDatosAlertas() {
 
-        const tbody = document.getElementById("tablaDatos");
-        tbody.innerHTML = "";
+    $.get(APIURL_ALERTAS, function (alertas) {
+
+        const tbody = $("#tablaDatos");
+        tbody.empty();
 
         alertas.forEach(a => {
-            tbody.innerHTML += `
+            tbody.append(`
                 <tr>
                     <td>${a._id}</td>
                     <td>${a.id_nino || ""}</td>
@@ -18,40 +16,51 @@ async function cargarDatosAlertas() {
                     <td>${a.fecha_generada ? new Date(a.fecha_generada).toLocaleDateString() : ""}</td>
                     <td>${a.dias_restantes ?? ""}</td>
                     <td>${a.estado || ""}</td>
+                    <td>
+                      <button class="btn btn-sm btn-warning btn-editar" data-id="${a._id}">
+                            Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger btn-eliminar" data-id="${a._id}">
+                            Eliminar
+                        </button>
+                        </td>
                 </tr>
-            `;
+            `);
         });
 
         console.log(alertas);
-    } catch (error) {
-        console.log("Error al cargar alertas: " + error);
-    }
+
+    }).fail(function (err) {
+        console.error("Error al cargar alertas:", err);
+    });
 }
 
-// Guardar alerta
-document.getElementById("alertaFormulario").addEventListener("submit", async e => {
+$("#alertaFormulario").on("submit", function (e) {
     e.preventDefault();
 
-    try {
-        const datos = {
-            id_nino: document.getElementById("id_nino").value,
-            tipo_alerta: document.getElementById("tipo_alerta").value,
-            fecha_generada: document.getElementById("fecha_generada").value,
-            dias_restantes: document.getElementById("dias_restantes").value || null,
-            estado: document.getElementById("estado").value || "Pendiente"
-        };
+    const datos = {
+        id_nino: $("#id_nino").val(),
+        tipo_alerta: $("#tipo_alerta").val(),
+        fecha_generada: $("#fecha_generada").val(),
+        dias_restantes: $("#dias_restantes").val() || null,
+        estado: $("#estado").val() || "Pendiente"
+    };
 
-        await fetch(APIURL_ALERTAS, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos)
-        });
+    $.ajax({
+        url: APIURL_ALERTAS,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
 
-        e.target.reset();
-        cargarDatosAlertas();
-    } catch (error) {
-        console.log("Error al guardar alerta: " + error);
-    }
+        success: function () {
+            $("#alertaFormulario")[0].reset();
+            cargarDatosAlertas();
+        },
+        error: function (err) {
+            console.error("Error al guardar alerta:", err);
+        }
+    });
 });
+
 
 cargarDatosAlertas();

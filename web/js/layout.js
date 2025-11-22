@@ -1,5 +1,6 @@
+
 const menus = `
-       
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>  
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
     <a class="navbar-brand fw-bold" href="#">PANI_DB</a>
@@ -57,6 +58,9 @@ const menus = `
 
         <li class="nav-item">
           <a class="nav-link" href="adopciones.html">Adopciones / Egresos</a>
+        </li>
+     <li class="nav-item">
+          <a class="nav-link" href="ubicaciones.html">Ubicacion</a>
         </li>
 
       </ul>

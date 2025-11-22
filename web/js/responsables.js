@@ -1,55 +1,75 @@
 const APIURL_RESPONSABLES = "http://localhost:3000/api/responsables/";
 
-// Cargar lista de responsables
-async function cargarDatosResponsables() {
-    try {
-        const res = await fetch(APIURL_RESPONSABLES);
-        const responsables = await res.json();
+function cargarDatosResponsables() {
 
-        const tbody = document.getElementById("tablaDatos");
-        tbody.innerHTML = "";
+    $.get(APIURL_RESPONSABLES, function(responsables) {
+
+        const tbody = $("#tablaDatos");
+        tbody.html("");
 
         responsables.forEach(r => {
-            tbody.innerHTML += `
+            tbody.append(`
                 <tr>
                     <td>${r._id}</td>
                     <td>${r.nombre || ""}</td>
                     <td>${r.cargo || ""}</td>
                     <td>${r.telefono || ""}</td>
                     <td>${r.correo || ""}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm btn-editar" data-id="${r._id}">Editar</button>
+                        <button class="btn btn-danger btn-sm btn-eliminar" data-id="${r._id}">Eliminar</button>
+                    </td>
                 </tr>
-            `;
+            `);
         });
 
         console.log(responsables);
-    } catch (error) {
-        console.log("Error al cargar responsables: " + error);
-    }
+    })
+    .fail(() => console.log("Error al cargar responsables"));
 }
 
-// Guardar responsable
-document.getElementById("responsablesFormulario").addEventListener("submit", async e => {
+
+$("#responsablesFormulario").on("submit", function(e) {
     e.preventDefault();
 
-    try {
-        const datos = {
-            nombre: document.getElementById("nombre").value,
-            cargo: document.getElementById("cargo").value || "",
-            telefono: document.getElementById("telefono").value || "",
-            correo: document.getElementById("correo").value || ""
-        };
+    const datos = {
+        nombre: $("#nombre").val(),
+        cargo: $("#cargo").val() || "",
+        telefono: $("#telefono").val() || "",
+        correo: $("#correo").val() || ""
+    };
 
-        await fetch(APIURL_RESPONSABLES, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos)
-        });
+    $.ajax({
+        url: APIURL_RESPONSABLES,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: function () {
+            $("#responsablesFormulario")[0].reset();
+            cargarDatosResponsables();
+        },
+        error: function () {
+            console.log("Error al guardar");
+        }
+    });
+});
 
-        e.target.reset();
-        cargarDatosResponsables();
-    } catch (error) {
-        console.log("Error al guardar responsable: " + error);
-    }
+
+$("#tablaDatos").on("click", ".btn-eliminar", function () {
+    const id = $(this).data("id");
+
+    if (!confirm("¿Desea eliminar este responsable?")) return;
+
+    $.ajax({
+        url: APIURL_RESPONSABLES + id,
+        method: "DELETE",
+        success: function () {
+            cargarDatosResponsables();
+        },
+        error: function () {
+            console.log("Error al eliminar");
+        }
+    });
 });
 
 cargarDatosResponsables();
