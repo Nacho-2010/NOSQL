@@ -29,7 +29,7 @@ route.post('/', async (req, res) => {
 route.get('/', async (req, res) => {
     try {
         const adopciones = await Adopcion.find();
-        res.json(adopciones);         // 👈 aquí NO devolvemos 400 nunca
+        res.json(adopciones);        
     } catch (error) {
         console.error('Error al obtener adopciones:', error.message);
         res.status(500).json({ mensaje: error.message });
