@@ -62,5 +62,23 @@ $("#ubicacionFormulario").on("submit", function (e) {
     });
 });
 
+$(document).on("click", ".btn-eliminar", function () {
+    const id = $(this).data("id");
+    if (!id) {
+        console.log("ID de ubicación no encontrado para eliminar.");
+        return;
+    }
+    $.ajax({
+        url: APIURL_UBICACIONES + id,
+        method: "DELETE",
+        success: function () {
+            console.log("Ubicación eliminada:", id);
+            cargarDatosUbicaciones();
+        },
+        error: function (err) {
+            console.log("Error al eliminar ubicación: ", err);
+        }
+    });
+});
 
 cargarDatosUbicaciones();

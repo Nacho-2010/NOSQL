@@ -54,4 +54,26 @@ $("#visitaFormulario").on("submit", function (e) {
     });
 });
 
+
+//lo puse para que busque por clase y no por id, ya que los botones se crean dinamicamente
+$(document).on("click", ".btn-eliminar", function () {
+    const id = $(this).data("id");
+    if (!id) {
+        console.log("ID de visita no encontrado para eliminar.");
+        return;
+    }
+
+    $.ajax({
+        url: APIURL_VISITAS + id,
+        method: "DELETE",
+        success: function () {
+            console.log("Visita eliminada:", id);
+            cargarDatosVisitas();
+        },
+        error: function (err) {
+            console.log("Error al eliminar visita: ", err);
+        }
+    });
+});
+
 cargarDatosVisitas();

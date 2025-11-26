@@ -59,4 +59,23 @@ $("#adopcionFormulario").on("submit", function (e) {
     });
 });
 
+$(document).on("click", ".btn-eliminar", function () {
+    const id = $(this).data("id");
+    if (!id) {
+        console.log("ID de adopción no encontrado para eliminar.");
+        return;
+    }
+    $.ajax({
+        url: APIURL_ADOPCIONES + id,
+        method: "DELETE",
+        success: function () {
+            console.log("Adopción eliminada:", id);
+            cargarDatosAdopciones();
+        },
+        error: function (err) {
+            console.error("Error al eliminar adopción:", err);
+        }
+    });
+});
+
 cargarDatosAdopciones();
