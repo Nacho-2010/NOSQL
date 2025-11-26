@@ -22,7 +22,28 @@ route.get('/', async (req, resp) => {
   }
 });
 
+route.put('/:id', async(req, resp) =>{
 
+       try {
+
+               const ubicacionActualizada = await Ubicacion.findByIdAndUpdate(
+                         req.params.id,
+                         req.body,
+                         {new: true}
+
+                    );
+
+               if (!ubicacionActualizada){
+                    return resp.status(404).json({mesaje: "Ubicacion no encontrada"});
+               }
+            
+               resp.status(200).json(ubicacionActualizada);
+       }catch(error){
+            resp.status(400).json({mesaje: error.message});
+       }
+
+    }
+);
 
 route.delete('/:id', async (req, resp) => {
   try {

@@ -22,7 +22,29 @@ route.post('/', async (req, resp) => {
     }
 });
 
+//Update put
+route.put('/:id', async(req, resp) =>{
 
+       try {
+
+               const abrigoActualizado = await Abrigo.findByIdAndUpdate(
+                         req.params.id,
+                         req.body,
+                         {new: true}
+
+                    );
+
+               if (!abrigoActualizado){
+                    return resp.status(404).json({mesaje: "Abrigo no encontrado"});
+               }
+            
+               resp.status(200).json(abrigoActualizado);
+       }catch(error){
+            resp.status(400).json({mesaje: error.message});
+       }
+
+    }
+);
 
 // Eliminar un abrigo
 route.delete('/:id', async (req, resp) => {

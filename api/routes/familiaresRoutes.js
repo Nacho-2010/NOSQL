@@ -22,6 +22,28 @@ route.get('/', async (req, resp) => {
   }
 });
 
+route.put('/:id', async(req, resp) =>{
+
+       try {
+
+               const familiarActualizado = await Familiar.findByIdAndUpdate(
+                         req.params.id,
+                         req.body,
+                         {new: true}
+
+                    );
+
+               if (!familiarActualizado){
+                    return resp.status(404).json({mesaje: "Familiar no encontrado"});
+               }
+            
+               resp.status(200).json(familiarActualizado);
+       }catch(error){
+            resp.status(400).json({mesaje: error.message});
+       }
+
+    }
+);
 
 
 route.delete('/:id', async (req, resp) => {

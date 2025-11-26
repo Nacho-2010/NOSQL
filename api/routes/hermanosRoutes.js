@@ -22,6 +22,29 @@ route.get('/', async (req, resp) => {
   }
 });
 
+route.put('/:id', async(req, resp) =>{
+
+       try {
+
+               const hermanoActualizado = await Hermano.findByIdAndUpdate(
+                         req.params.id,
+                         req.body,
+                         {new: true}
+
+                    );
+
+               if (!hermanoActualizado){
+                    return resp.status(404).json({mesaje: "Hermano no encontrado"});
+               }
+            
+               resp.status(200).json(hermanoActualizado);
+       }catch(error){
+            resp.status(400).json({mesaje: error.message});
+       }
+
+    }
+);
+
 route.delete('/:id', async (req, resp) => {
   try {
     const eliminado = await Hermano.findByIdAndDelete(req.params.id);

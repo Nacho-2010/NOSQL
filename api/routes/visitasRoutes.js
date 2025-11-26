@@ -23,6 +23,29 @@ route.get('/', async (req, resp) => {
 });
 
 
+route.put('/:id', async(req, resp) =>{
+
+       try {
+
+               const visitaActualizada = await Visita.findByIdAndUpdate(
+                         req.params.id,
+                         req.body,
+                         {new: true}
+
+                    );
+
+               if (!visitaActualizada){
+                    return resp.status(404).json({mesaje: "Visita no encontrada"});
+               }
+            
+               resp.status(200).json(visitaActualizada);
+       }catch(error){
+            resp.status(400).json({mesaje: error.message});
+       }
+
+    }
+);
+
 route.delete('/:id', async (req, resp) => {
   try {
     const eliminado = await Visita.findByIdAndDelete(req.params.id);

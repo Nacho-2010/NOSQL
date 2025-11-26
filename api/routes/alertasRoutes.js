@@ -22,6 +22,32 @@ route.get('/', async (req, resp) => {
   }
 });
 
+
+
+route.put('/:id', async(req, resp) =>{
+
+       try {
+
+               const alertaActualizado = await Alerta.findByIdAndUpdate(
+                         req.params.id,
+                         req.body,
+                         {new: true}
+
+                    );
+
+               if (!alertaActualizado){
+                    return resp.status(404).json({mesaje: "Alerta no encontrada"});
+               }
+            
+               resp.status(200).json(alertaActualizado);
+       }catch(error){
+            resp.status(400).json({mesaje: error.message});
+       }
+
+    }
+);
+
+
 route.delete('/:id', async (req, resp) => {
   try {
     const eliminado = await Alerta.findByIdAndDelete(req.params.id);

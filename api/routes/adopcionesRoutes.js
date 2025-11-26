@@ -36,7 +36,28 @@ route.get('/', async (req, res) => {
     }
 });
 
+route.put('/:id', async(req, resp) =>{
 
+       try {
+
+               const adopcionActualizado = await Adopcion.findByIdAndUpdate(
+                         req.params.id,
+                         req.body,
+                         {new: true}
+
+                    );
+
+               if (!adopcionActualizado){
+                    return resp.status(404).json({mesaje: "Adopcion no encontrada"});
+               }
+            
+               resp.status(200).json(adopcionActualizado);
+       }catch(error){
+            resp.status(400).json({mesaje: error.message});
+       }
+
+    }
+);
 
 // eliminar una adopción
 route.delete('/:id', async (req, res) => {
