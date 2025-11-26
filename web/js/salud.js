@@ -56,4 +56,24 @@ $("#saludFormulario").on("submit", function (e) {
         }
     });
 });
+
+$("#tablaDatos").on("click", ".btn-eliminar", function () {
+
+    const id = $(this).data("id");
+
+    if (!confirm("¿Desea eliminar este registro de salud ")) return;
+
+    $.ajax({
+        url: APIURL_SALUD + id,
+        method: "DELETE",
+
+        success: function () {
+            cargarDatosSalud();
+        },
+        error: function (err) {
+            console.error("Error al eliminar el registro de salud:", err);
+        }
+    });
+});
+
 cargarDatosSalud();

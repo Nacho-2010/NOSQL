@@ -61,4 +61,23 @@ $("#abrigoFormulario").on("submit", function (e) {
         }
     });
 });
+
+$("#tablaDatos").on("click", ".btn-eliminar", function () {
+
+    const id = $(this).data("id");
+
+    if (!confirm("¿Desea eliminar este abrigo del registro?")) return;
+
+    $.ajax({
+        url: APIURL_ABRIGO+ id,
+        method: "DELETE",
+
+        success: function () {
+            cargarDatosAbrigo();
+        },
+        error: function (err) {
+            console.error("Error al eliminar el abrigo:", err);
+        }
+    });
+});
 cargarDatosAbrigo();

@@ -63,4 +63,23 @@ $("#alertaFormulario").on("submit", function (e) {
 });
 
 
+$("#tablaDatos").on("click", ".btn-eliminar", function () {
+
+    const id = $(this).data("id");
+
+    if (!confirm("¿Desea eliminar esta alerta del registro?")) return;
+
+    $.ajax({
+        url: APIURL_ALERTAS + id,
+        method: "DELETE",
+
+        success: function () {
+            cargarDatosAlertas();
+        },
+        error: function (err) {
+            console.error("Error al eliminar esta alerta:", err);
+        }
+    });
+});
+
 cargarDatosAlertas();

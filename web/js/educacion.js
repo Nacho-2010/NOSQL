@@ -58,4 +58,25 @@ $("#educacionFormulario").on("submit", function (e) {
         }
     });
 });
+
+
+$("#tablaDatos").on("click", ".btn-eliminar", function () {
+
+    const id = $(this).data("id");
+
+    if (!confirm("¿Desea eliminar esta educacion del registro?")) return;
+
+    $.ajax({
+        url: APIURL_EDUCACION+ id,
+        method: "DELETE",
+
+        success: function () {
+            cargarDatosEducacion();
+        },
+        error: function (err) {
+            console.error("Error al eliminar la educacion:", err);
+        }
+    });
+});
+
 cargarDatosEducacion();
