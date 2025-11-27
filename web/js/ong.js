@@ -1,6 +1,8 @@
 const APIURL_ONG = "http://localhost:3000/api/ong/";
 
 
+let idEditando = null;
+
 function cargarDatosOng() {
 
     $.get(APIURL_ONG, function (ongs) {
@@ -36,8 +38,6 @@ function cargarDatosOng() {
     });
 }
 
-
-
 $("#ongFormulario").on("submit", function (e) {
     e.preventDefault();
 
@@ -49,22 +49,34 @@ $("#ongFormulario").on("submit", function (e) {
         capacidad: $("#capacidad").val() || null
     };
 
+
+    const url = idEditando ? APIURL_ONG + idEditando : APIURL_ONG;
+    const metodo = idEditando ? "PUT" : "POST";
+
     $.ajax({
-        url: APIURL_ONG,
-        method: "POST",
+        url: url,
+        method: metodo,
         contentType: "application/json",
         data: JSON.stringify(datos),
 
         success: function () {
             $("#ongFormulario")[0].reset();
+            idEditando = null; 
             cargarDatosOng();
+
+            if (window.bootstrap) {
+                const modalEl = document.getElementById("modalOng");
+                if (modalEl) {
+                    const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                    modal.hide();
+                }
+            }
         },
         error: function (err) {
             console.error("Error al guardar ONG:", err);
         }
     });
 });
-
 
 
 $("#tablaDatos").on("click", ".btn-eliminar", function () {
@@ -85,11 +97,29 @@ $("#tablaDatos").on("click", ".btn-eliminar", function () {
 });
 
 
-
 $("#tablaDatos").on("click", ".btn-editar", function () {
     const id = $(this).data("id");
+    idEditando = id; 
+
+    const $fila = $(this).closest("tr");
+    const celdas = $fila.find("td");
+
+    $("#nombre").val($(celdas[1]).text().trim());
+    $("#provincia").val($(celdas[2]).text().trim());
+    $("#telefono").val($(celdas[3]).text().trim());
+    $("#correo").val($(celdas[4]).text().trim());
+    $("#capacidad").val($(celdas[5]).text().trim());
+
     console.log("Editar ONG con id:", id);
 
+ 
+    if (window.bootstrap) {
+        const modalEl = document.getElementById("modalOng");
+        if (modalEl) {
+            const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    }
 });
 
 

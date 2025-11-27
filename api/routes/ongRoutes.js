@@ -22,28 +22,26 @@ route.get('/', async (req, resp) => {
   }
 });
 
-route.put('/:id', async(req, resp) =>{
+route.put('/:id', async (req, resp) => {
+  try {
 
-       try {
+    const actualizado = await Ong.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },    
+      { new: true, runValidators: true }  
+    );
 
-               const ONGActualizado = await Ong.findByIdAndUpdate(
-                         req.params.id,
-                         req.body,
-                         {new: true}
-
-                    );
-
-               if (!ONGActualizado){
-                    return resp.status(404).json({mesaje: "ONG no encontrada"});
-               }
-            
-               resp.status(200).json(ONGActualizado);
-       }catch(error){
-            resp.status(400).json({mesaje: error.message});
-       }
-
+    if (!actualizado) {
+      return resp.status(404).json({ mensaje: "ONG no encontrada" });
     }
-);
+
+    resp.status(200).json(actualizado);
+
+  } catch (error) {
+    resp.status(400).json({ mensaje: error.message });
+  }
+});
+
 
 route.delete('/:id', async (req, resp) => {
   try {
