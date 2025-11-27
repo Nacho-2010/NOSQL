@@ -22,28 +22,23 @@ route.get('/', async (req, resp) => {
   }
 });
 
-route.put('/:id', async(req, resp) =>{
+route.put('/:id', async (req, resp) => {
+  try {
+    const responsableActualizado = await Responsable.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
 
-       try {
-
-               const responsableActualizado = await Responsable.findByIdAndUpdate(
-                         req.params.id,
-                         req.body,
-                         {new: true}
-
-                    );
-
-               if (!responsableActualizado){
-                    return resp.status(404).json({mesaje: "Responsable no encontrado"});
-               }
-            
-               resp.status(200).json(responsableActualizado);
-       }catch(error){
-            resp.status(400).json({mesaje: error.message});
-       }
-
+    if (!responsableActualizado) {
+      return resp.status(404).json({ mensaje: "Responsable no encontrado" });
     }
-);
+
+    resp.status(200).json(responsableActualizado);
+  } catch (error) {
+    resp.status(400).json({ mensaje: error.message });
+  }
+});
 
 route.delete('/:id', async (req, resp) => {
   try {
