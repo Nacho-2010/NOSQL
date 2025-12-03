@@ -28,9 +28,9 @@ route.put('/:id', async(req, resp) =>{
 
                const ubicacionActualizada = await Ubicacion.findByIdAndUpdate(
                          req.params.id,
-                         req.body,
-                         {new: true}
-
+                         {$set: req.body},
+                         {new: true, runValidators: true  }
+                         
                     );
 
                if (!ubicacionActualizada){
