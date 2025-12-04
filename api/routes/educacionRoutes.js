@@ -22,29 +22,23 @@ route.get('/', async (req, resp) => {
   }
 });
 
-route.put('/:id', async(req, resp) =>{
+route.put('/:id', async (req, resp) => {
+  try {
+    const educacionActualizada = await Educacion.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
 
-       try {
-
-               const educacionActualizado = await Educacion.findByIdAndUpdate(
-                         req.params.id,
-                         req.body,
-                         {new: true}
-
-                    );
-
-               if (!educacionActualizado){
-                    return resp.status(404).json({mesaje: "Historial de educación no encontrado"});
-               }
-            
-               resp.status(200).json(educacionActualizado);
-       }catch(error){
-            resp.status(400).json({mesaje: error.message});
-       }
-
+    if (!educacionActualizada) {
+      return resp.status(404).json({ mensaje: "Historial de educación no encontrado" });
     }
-);
 
+    resp.status(200).json(educacionActualizada);
+  } catch (error) {
+    resp.status(400).json({ mensaje: error.message });
+  }
+});
 
 route.delete('/:id', async (req, resp) => {
   try {

@@ -4,13 +4,17 @@
     <title>Educación</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>  
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
-
 <body>
-  <div id="seccionMenu"></div>
+    <div id="seccionMenu"></div>
+
     <div class="container mt-4">
         <h1>Historial educativo</h1>
 
@@ -18,13 +22,16 @@
             Registrar educación
         </button>
 
+        <!-- Modal -->
         <div class="modal fade" id="modalEdu" tabindex="-1" aria-labelledby="modalEduLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
+
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalEduLabel">Registrar educación</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
+
                     <div class="modal-body">
                         <form id="educacionFormulario">
                             <div class="mb-3">
@@ -48,11 +55,13 @@
                                 <button type="reset" class="btn btn-secondary">Limpiar</button>
                             </div>
                         </form>
-                    </div>                    
+                    </div>
+
                 </div>
             </div>
         </div>
 
+        <!-- Tabla -->
         <div class="table-responsive mt-3">
             <table class="table table-striped table-bordered">
                 <thead>
@@ -62,6 +71,7 @@
                         <th>Centro educativo</th>
                         <th>Nivel</th>
                         <th>Rendimiento</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="tablaDatos"></tbody>
@@ -69,9 +79,9 @@
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="../js/educacion.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/layout.js"></script>
 </body>
 </html>

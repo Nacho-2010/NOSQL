@@ -22,29 +22,26 @@ route.get('/', async (req, resp) => {
   }
 });
 
-route.put('/:id', async(req, resp) =>{
+// UPDATE
+route.put('/:id', async (req, resp) => {
+  try {
+    const reporteActualizado = await Reporte.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
 
-       try {
-
-               const reporteActualizado = await Reporte.findByIdAndUpdate(
-                         req.params.id,
-                         req.body,
-                         {new: true}
-
-                    );
-
-               if (!reporteActualizado){
-                    return resp.status(404).json({mesaje: "Reporte no encontrado"});
-               }
-            
-               resp.status(200).json(reporteActualizado);
-       }catch(error){
-            resp.status(400).json({mesaje: error.message});
-       }
-
+    if (!reporteActualizado) {
+      return resp.status(404).json({ mensaje: "Reporte no encontrado" });
     }
-);
 
+    resp.status(200).json(reporteActualizado);
+  } catch (error) {
+    resp.status(400).json({ mensaje: error.message });
+  }
+});
+
+// DELETE
 route.delete('/:id', async (req, resp) => {
   try {
     const eliminado = await Reporte.findByIdAndDelete(req.params.id);

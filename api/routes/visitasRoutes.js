@@ -22,30 +22,26 @@ route.get('/', async (req, resp) => {
   }
 });
 
+// UPDATE
+route.put('/:id', async (req, resp) => {
+  try {
+    const visitaActualizada = await Visita.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
 
-route.put('/:id', async(req, resp) =>{
-
-       try {
-
-               const visitaActualizada = await Visita.findByIdAndUpdate(
-                         req.params.id,
-                         req.body,
-                         {new: true}
-
-                    );
-
-               if (!visitaActualizada){
-                    return resp.status(404).json({mesaje: "Visita no encontrada"});
-               }
-            
-               resp.status(200).json(visitaActualizada);
-       }catch(error){
-            resp.status(400).json({mesaje: error.message});
-       }
-
+    if (!visitaActualizada) {
+      return resp.status(404).json({ mensaje: "Visita no encontrada" });
     }
-);
 
+    resp.status(200).json(visitaActualizada);
+  } catch (error) {
+    resp.status(400).json({ mensaje: error.message });
+  }
+});
+
+// DELETE
 route.delete('/:id', async (req, resp) => {
   try {
     const eliminado = await Visita.findByIdAndDelete(req.params.id);
