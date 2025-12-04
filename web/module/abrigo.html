@@ -24,52 +24,40 @@
 
     <!-- Modal -->
     <div class="modal fade" id="modalAbrigo" tabindex="-1" aria-labelledby="modalAbrigoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAbrigoLabel">Registrar Abrigo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body">
-                    <form id="abrigoFormulario">
-
-                        <div class="mb-3">
-                            <label class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" required />
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Descripción</label>
-                            <input type="text" class="form-control" id="descripcion" required />
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select" id="estado">
-                                <option value="Activo" selected>Activo</option>
-                                <option value="Inactivo">Inactivo</option>
-                                <option value="Pendiente">Pendiente</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Correo</label>
-                            <input type="email" class="form-control" id="correo" required />
-                        </div>
-
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <button type="reset" class="btn btn-secondary">Limpiar</button>
-                        </div>
-
-                    </form>
-                </div>
-
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- header... -->
+      <div class="modal-body">
+        <form id="abrigoFormulario">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <input type="text" class="form-control" id="descripcion" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <select class="form-select" id="estado">
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+              <option value="Pendiente">Pendiente</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="email" class="form-control" id="correo" required />
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="reset" class="btn btn-secondary">Limpiar</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+</div>
 
     <!-- Tabla -->
     <div class="table-responsive mt-3">

@@ -22,30 +22,26 @@ route.get('/', async (req, resp) => {
   }
 });
 
-route.put('/:id', async(req, resp) =>{
+// UPDATE
+route.put('/:id', async (req, resp) => {
+  try {
+    const familiarActualizado = await Familiar.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
 
-       try {
-
-               const familiarActualizado = await Familiar.findByIdAndUpdate(
-                         req.params.id,
-                         req.body,
-                         {new: true}
-
-                    );
-
-               if (!familiarActualizado){
-                    return resp.status(404).json({mesaje: "Familiar no encontrado"});
-               }
-            
-               resp.status(200).json(familiarActualizado);
-       }catch(error){
-            resp.status(400).json({mesaje: error.message});
-       }
-
+    if (!familiarActualizado) {
+      return resp.status(404).json({ mensaje: "Familiar no encontrado" });
     }
-);
 
+    resp.status(200).json(familiarActualizado);
+  } catch (error) {
+    resp.status(400).json({ mensaje: error.message });
+  }
+});
 
+// DELETE
 route.delete('/:id', async (req, resp) => {
   try {
     const eliminado = await Familiar.findByIdAndDelete(req.params.id);

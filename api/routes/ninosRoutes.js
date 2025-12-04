@@ -24,29 +24,24 @@ route.get('/', async (req, resp) => {
   }
 });
 
-route.put('/:id', async(req, resp) =>{
+// Actualizar niño (UPDATE)
+route.put('/:id', async (req, resp) => {
+  try {
+    const ninoActualizado = await Nino.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
 
-       try {
-
-               const ninoActualizado = await Nino.findByIdAndUpdate(
-                         req.params.id,
-                         req.body,
-                         {new: true}
-
-                    );
-
-               if (!ninoActualizado){
-                    return resp.status(404).json({mesaje: "Niño no encontrado"});
-               }
-            
-               resp.status(200).json(ninoActualizado);
-       }catch(error){
-            resp.status(400).json({mesaje: error.message});
-       }
-
+    if (!ninoActualizado) {
+      return resp.status(404).json({ mensaje: "Niño no encontrado" });
     }
-);
 
+    resp.status(200).json(ninoActualizado);
+  } catch (error) {
+    resp.status(400).json({ mensaje: error.message });
+  }
+});
 
 // Eliminar niño
 route.delete('/:id', async (req, resp) => {

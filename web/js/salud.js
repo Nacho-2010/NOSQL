@@ -76,4 +76,28 @@ $("#tablaDatos").on("click", ".btn-eliminar", function () {
     });
 });
 
+//Editar
+$("#tablaDatos").on("click", ".btn-editar", function () {
+    const id = $(this).data("id");
+    idEditando = id;
+
+    const $fila = $(this).closest("tr");
+    const celdas = $fila.find("td");
+
+    $("#nombre").val($(celdas[1]).text().trim());
+    $("#cargo").val($(celdas[2]).text().trim());
+    $("#telefono").val($(celdas[3]).text().trim());
+    $("#correo").val($(celdas[4]).text().trim());
+
+    console.log("Editar responsable con id:", id);
+
+    if (window.bootstrap) {
+        const modalEl = document.getElementById("modalResp");
+        if (modalEl) {
+            const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    }
+});
+
 cargarDatosSalud();

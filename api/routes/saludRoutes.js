@@ -22,28 +22,23 @@ route.get('/', async (req, resp) => {
   }
 });
 
-route.put('/:id', async(req, resp) =>{
+route.put('/:id', async (req, resp) => {
+  try {
+    const SaludActualizada = await Salud.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
 
-       try {
-
-               const saludActualizado = await Salud.findByIdAndUpdate(
-                         req.params.id,
-                         req.body,
-                         {new: true}
-
-                    );
-
-               if (!saludActualizado){
-                    return resp.status(404).json({mesaje: "Salud de niño no encontrada"});
-               }
-            
-               resp.status(200).json(saludActualizado);
-       }catch(error){
-            resp.status(400).json({mesaje: error.message});
-       }
-
+    if (!SaludActualizada) {
+      return resp.status(404).json({ mensaje: "Salud no encontrada" });
     }
-);
+
+    resp.status(200).json(SaludActualizada);
+  } catch (error) {
+    resp.status(400).json({ mensaje: error.message });
+  }
+});
 
 route.delete('/:id', async (req, resp) => {
   try {
