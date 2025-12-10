@@ -5,30 +5,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+    <link rel="stylesheet" href="../css/Styles.css" />
 </head>
 
 <body>
     <div id="seccionMenu"></div>
 
-    <div class="container mt-4">
-        <h1>Historial educativo</h1>
+    <!-- header-->
+    <div class="page-header">
+        <div class="main-container">
+          <h1><i class="bi bi-book-half"></i> Educación</h1>
+          <p>Gestión de educación de los niños</p>
+        </div>
+      </div>
 
-        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalEdu">
-            Registrar educación
+    <div class="container mb-5">
+        <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#modalEdu">
+            <i class="bi bi-plus-circle"></i> Registrar educación
         </button>
+        
 
         <!-- Modal -->
         <div class="modal fade" id="modalEdu" tabindex="-1" aria-labelledby="modalEduLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEduLabel">Registrar educación</h5>
+                        <h5 class="modal-title" id="modalEduLabel"><i class="bi bi-plus-circle"></i> Registrar Educación</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
 
@@ -50,13 +55,16 @@
                                 <label class="form-label">Rendimiento</label>
                                 <input type="text" class="form-control" id="rendimiento" />
                             </div>
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary">Guardar</button>
-                                <button type="reset" class="btn btn-secondary">Limpiar</button>
-                            </div>
+                            <div class="d-flex gap-2 justify-content-end">
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="bi bi-arrow-clockwise"></i> Limpiar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Guardar
+                            </button>
+                        </div>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -78,6 +86,8 @@
             </table>
         </div>
     </div>
+
+    <div id="seccionFooter"></div>
 
     <!-- Scripts -->
     <script src="../js/educacion.js"></script>

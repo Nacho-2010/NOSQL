@@ -2,40 +2,15 @@
 const menus = `
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<nav class="navbar navbar-expand-lg navbar-light shadow-sm" style="background:#0d6efd;">
-  <div class="container-fluid">
-
-    <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="#">
-      <i class="bi bi-database-fill me-2"></i> PANI_DB
-    </a>
-
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <style>
-      .navbar-nav .nav-link {
-        color: #ffffff !important;
-        font-weight: 500;
-        margin-right: 10px;
-        transition: 0.2s;
-      }
-      .navbar-nav .nav-link:hover {
-        color: #ffe08a !important;
-        transform: translateY(-1px);
-      }
-      .menu-divider {
-        width: 1px;
-        height: 28px;
-        background: rgba(255,255,255,0.4);
-        margin: 0 12px;
-      }
-    </style>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav align-items-center">
-
-        <li class="nav-item"><a class="nav-link" href="ninos.html"><i class="bi bi-emoji-smile me-1"></i>Niños</a></li>
+<nav class="navbar sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="../module/index.html"><i class="bi bi-shield-check"></i> PANI DB</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="ninos.html"><i class="bi bi-emoji-smile me-1"></i>Niños</a></li>
         <li class="nav-item"><a class="nav-link" href="responsables.html"><i class="bi bi-person-badge me-1"></i>Responsables</a></li>
         <li class="nav-item"><a class="nav-link" href="ong.html"><i class="bi bi-building-heart me-1"></i>ONG</a></li>
         <li class="nav-item"><a class="nav-link" href="abrigo.html"><i class="bi bi-house-door me-1"></i>Abrigo</a></li>
@@ -58,14 +33,20 @@ const menus = `
         <li class="nav-item"><a class="nav-link" href="adopciones.html"><i class="bi bi-person-hearts me-1"></i>Adopciones / Egresos</a></li>
         <li class="nav-item"><a class="nav-link" href="ubicaciones.html"><i class="bi bi-geo-alt me-1"></i>Ubicación</a></li>
 
-      </ul>
+        </div>
     </div>
-  </div>
 </nav>
 
 `;
 
-
+const footers = `
+<footer class="bg-light border-top mt-5 py-4">
+    <div class="main-container text-center text-muted">
+        <p class="mb-0">&copy; 2025 PANI DB - Protección de Niños y Familias. Todos los derechos reservados.</p>
+    </div>
+</footer> `;
 
 const htmlseccionMenu = $("#seccionMenu");
+const htmlseccionFooter = $("#seccionFooter");
+htmlseccionFooter.append(footers);
 htmlseccionMenu.append(menus);
