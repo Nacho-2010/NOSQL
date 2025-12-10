@@ -12,7 +12,7 @@ const menus = `
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="ninos.html"><i class="bi bi-emoji-smile me-1"></i>Niños</a></li>
         <li class="nav-item"><a class="nav-link" href="responsables.html"><i class="bi bi-person-badge me-1"></i>Responsables</a></li>
-        <li class="nav-item"><a class="nav-link" href="ong.html"><i class="bi bi-building-heart me-1"></i>ONG</a></li>
+        <li class="nav-item"><a class="nav-link" href="ong.html"><i class="bi bi-houses me-1"></i>ONG</a></li>
         <li class="nav-item"><a class="nav-link" href="abrigo.html"><i class="bi bi-house-door me-1"></i>Abrigo</a></li>
 
         <div class="menu-divider"></div>
